@@ -1,3 +1,7 @@
 # chess-ai-project
 
-thêm file mới nhớ tạo branch mới rồi đẩy lên đó, ko đẩy lên main.
+Mỗi người tự tạo nhánh và đặt tên nhánh theo phần mình làm.
+
+Commit cái gì thì nhớ ghi rõ.
+
+Ai chưa hiểu hay chưa rõ gì thì cứ đặt câu hỏi lên nhóm.
