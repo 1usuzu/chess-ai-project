@@ -1,0 +1,12 @@
+{
+  "name": "chess-ai-project",
+  "version": "1.0.0",
+  "main": "chess-ai.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node test.js"
+  },
+  "dependencies": {
+    "chess.js": "^1.0.0"
+  }
+}
