@@ -25,8 +25,8 @@ app.post('/api/game/move', (req, res) => {
   const success = applyMove(sessionId, move);
   if (!success) return res.status(400).json({ error: 'Nước đi không hợp lệ' });
 
-  // Lấy nước đi AI (nếu bạn đã làm AI)
-  const aiMove = getBestMove(sessionId); // cần services/ai.js
+  // Lấy nước đi AI 
+  const aiMove = getBestMove(sessionId); 
   applyMove(sessionId, aiMove);
 
   res.json({ board: getFEN(sessionId), aiMove });
