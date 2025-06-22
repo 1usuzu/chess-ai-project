@@ -1,25 +1,47 @@
 const { Chess } = require('chess.js');
 
-// Đánh giá điểm quân cờ
+// Giá trị quân cờ cơ bản
 function getPieceValue(piece, x, y) {
     if (!piece) return 0;
-    const values = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 };
-    const value = values[piece.type] || 0;
+
+    const baseValues = { p: 10, n: 30, b: 30, r: 50, q: 90, k: 900 }; // nhân lên để rõ ràng
+    let value = baseValues[piece.type] || 0;
+
+    // Ưu tiên quân tốt tiến sâu
+    if (piece.type === 'p') {
+        value += piece.color === 'w' ? (6 - x) : (x - 1); // x: hàng (0 ở trên)
+    }
+
     return piece.color === 'w' ? value : -value;
 }
 
-// Đánh giá bàn cờ
+// Hàm đánh giá bàn cờ
 function evaluateBoard(board) {
     let total = 0;
+
+    const centerSquares = [
+        [3, 3], [3, 4],
+        [4, 3], [4, 4]
+    ];
+
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
-            total += getPieceValue(board[i][j], i, j);
+            const piece = board[i][j];
+            let value = getPieceValue(piece, i, j);
+
+            // Ưu tiên kiểm soát trung tâm mạnh hơn
+            if (piece && centerSquares.some(([x, y]) => x === i && y === j)) {
+                value += piece.color === 'w' ? 10 : -10;
+            }
+
+            total += value;
         }
     }
-    return total;
+
+    return Math.round(total); // Làm tròn số nguyên
 }
 
-// Minimax với Alpha-Beta
+// Minimax với cắt tỉa Alpha-Beta
 function minimax(depth, game, alpha, beta, isMaximisingPlayer) {
     if (depth === 0) return evaluateBoard(game.board());
 
@@ -50,25 +72,38 @@ function minimax(depth, game, alpha, beta, isMaximisingPlayer) {
     }
 }
 
-// Hàm chính: Tìm nước đi tốt nhất từ FEN
+// Hàm tìm nước đi tốt nhất
 function findBestMove(fen, depth) {
     const game = new Chess(fen);
     const moves = game.moves({ verbose: true });
 
     let bestMove = null;
     let bestEval = -Infinity;
+    const moveScores = [];
 
     for (const move of moves) {
         game.move(move);
         const eval = minimax(depth - 1, game, -Infinity, Infinity, false);
         game.undo();
+        moveScores.push({
+            move: `${move.from}${move.to}`,
+            score: eval
+        });
         if (eval > bestEval) {
             bestEval = eval;
             bestMove = move;
         }
     }
 
-    return `${bestMove.from}${bestMove.to}`;
+    console.log("Move scores:");
+    moveScores.forEach(m => {
+        console.log(`${m.move}: ${m.score}`);
+    });
+
+    return {
+        bestMove: `${bestMove.from}${bestMove.to}`,
+        scores: moveScores
+    };
 }
 
 module.exports = {
