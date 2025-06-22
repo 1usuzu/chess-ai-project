@@ -1,9 +1,8 @@
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { createGame, applyMove, getFEN } = require('./services/chessLogic');
-const { getBestMove } = require('./services/chessAI');
+const { createGame, applyMove, getFEN } = require('./logic');
+const { getBestMove } = require('./ai');
 
 const app = express();
 const PORT = 5000;
