@@ -1,6 +1,6 @@
 const { createSession, getSession, updateSession } = require("../sessions/gameSessions");
-const { getBestMove } = require("../services/chessAI");
-const { applyMove, getFEN } = require("../services/chessLogic");
+const { getBestMove } = require("../ai");
+const { applyMove, getFEN } = require("../logic");
 
 const createGame = (req, res) => {
   const sessionId = createSession(); // tạo session cờ mới
