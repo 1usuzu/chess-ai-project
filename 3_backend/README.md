@@ -45,6 +45,7 @@ res.json({ board: getFEN(sessionId), aiMove });
 Nhận nước đi từ người chơi,
 Gọi AI để chọn nước đi phản hồi,
 Trả lại bàn cờ mới và nước đi AI.
+
 **2. logic.js**
 const { Chess } = require("chess.js");
 const games = {}; // Lưu ván cờ theo sessionId
