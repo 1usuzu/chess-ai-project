@@ -16,13 +16,18 @@ npm install
 node server.js
 Server sẽ chạy tại http://localhost:5000.
 ### Chi tiết
+
 **1. server.js**
+
 Tạo một server chạy cờ vua với AI sử dụng Node.js + Express.
 
 Người chơi gửi nước đi, AI sẽ phản ứng lại. Mọi xử lý diễn ra phía server.
 **2.logic.js**
+
 Quản lý nhiều ván cờ vua, mỗi ván tương ứng với một người chơi (hoặc một session).
+
 **3.gameSession.js**
+
 Quản lý các ván cờ riêng biệt cho từng người chơi bằng cách sử dụng một session ID.
 
 Nó làm 3 việc chính:
@@ -32,12 +37,16 @@ Tạo ván chơi mới.
 Lấy ván chơi theo ID.
 
 Cập nhật lại ván chơi.
+
 **4.gameRoutes.js**
+
 Đây là định nghĩa các đường dẫn API (gọi là route) để:
 
 Tạo ván cờ mới
 
 ➡Gửi nước đi của người chơi và nhận phản hồi của AI
+
 **5.gameController.js**
+
 Tạo một ván cờ mới và cho phép người chơi đi quân, sau đó AI sẽ đi lại, tất cả diễn ra trên server.
 
