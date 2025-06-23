@@ -4,7 +4,7 @@
   "main": "chess-ai.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node test.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "chess.js": "^1.0.0",

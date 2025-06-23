@@ -1,7 +1,10 @@
+// index.js
+
 const { Chess } = require("chess.js");
-const { findBestMove } = require("./chess-ai");
+const { findBestMove } = require("./ai"); // Gọi từ ai.js (trong thư mục cùng cấp)
 const prompt = require("prompt-sync")();
 
+// --- Chọn màu quân cờ ---
 let playerColor = prompt("Bạn muốn chơi quân nào? (w = Trắng, b = Đen): ").trim().toLowerCase();
 while (playerColor !== 'w' && playerColor !== 'b') {
     playerColor = prompt("Vui lòng nhập lại (w hoặc b): ").trim().toLowerCase();
@@ -10,12 +13,14 @@ const aiColor = playerColor === 'w' ? 'b' : 'w';
 
 const game = new Chess();
 
+// --- In bàn cờ ---
 function printBoard() {
     console.log("\nBàn cờ hiện tại:");
     console.log(game.ascii());
     console.log("Lượt đi hiện tại:", game.turn() === 'w' ? "Trắng" : "Đen");
 }
 
+// --- Kiểm tra kết thúc ---
 function checkGameOver() {
     if (game.isGameOver()) {
         if (game.isCheckmate()) {
@@ -32,7 +37,7 @@ function checkGameOver() {
 
 printBoard();
 
-// ----- VÒNG LẶP TRÒ CHƠI -----
+// --- VÒNG LẶP TRÒ CHƠI ---
 while (true) {
     if (game.turn() === playerColor) {
         const moveInput = prompt("Nhập nước đi của bạn (ví dụ: e2e4): ").trim();
@@ -47,9 +52,10 @@ while (true) {
         printBoard();
         checkGameOver();
     } else {
+        console.log("\n AI đang suy nghĩ...");
         const result = findBestMove(game.fen(), 3);
 
-        console.log("\n Điểm từng nước đi AI có thể chọn:");
+        console.log("\n Điểm đánh giá các nước đi của AI:");
         result.scores.forEach(({ move, score }) => {
             console.log(`- ${move}: ${score}`);
         });
