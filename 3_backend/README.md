@@ -6,105 +6,38 @@
 
 ## 📌 Mục tiêu
 
-- ✅ Tạo ván chơi mới (`POST /api/game/new`)
-- ✅ Gửi nước đi người chơi (`POST /api/game/move`)
-- ✅ Trả về nước đi AI và trạng thái bàn cờ (FEN)
+-  Tạo ván chơi mới (`POST /api/game/new`)
+-  Gửi nước đi người chơi (`POST /api/game/move`)
+-  Trả về nước đi AI và trạng thái bàn cờ (FEN)
 
 🔧 Cài đặt
 npm install
-▶️ Chạy server
+▶Chạy server
 node server.js
 Server sẽ chạy tại http://localhost:5000.
 ### Chi tiết
 **1. server.js**
+Tạo một server chạy cờ vua với AI sử dụng Node.js + Express.
 
-const express = require('express');
+Người chơi gửi nước đi, AI sẽ phản ứng lại. Mọi xử lý diễn ra phía server.
+**2.logic.js**
+Quản lý nhiều ván cờ vua, mỗi ván tương ứng với một người chơi (hoặc một session).
+**3.gameSession.js**
+Quản lý các ván cờ riêng biệt cho từng người chơi bằng cách sử dụng một session ID.
 
-const cors = require('cors');
+Nó làm 3 việc chính:
 
-const bodyParser = require('body-parser');
+Tạo ván chơi mới.
 
-const { createGame, applyMove, getFEN } = require('./logic');
+Lấy ván chơi theo ID.
 
-const { getBestMove } = require('./ai');
+Cập nhật lại ván chơi.
+**4.gameRoutes.js**
+Đây là định nghĩa các đường dẫn API (gọi là route) để:
 
--Để khai báo các thư viện cần thiết và import các hàm từ logic.js và ai.js.
+Tạo ván cờ mới
 
-app.post('/api/game/new', (req, res) => {
-
-const sessionId = Date.now().toString();
-
-const board = createGame(sessionId);
-
-res.json({ sessionId, board });
-});
-
--API /api/game/new: tạo ván cờ mới, trả về sessionId và board dưới dạng chuỗi FEN (mô tả trạng thái bàn cờ).
-
-app.post('/api/game/move', (req, res) => {
-
-const { sessionId, move } = req.body;
-
-const success = applyMove(sessionId, move);
-
-if (!success) return res.status(400).json({ error: 'Nước đi không hợp lệ' });
-const aiMove = getBestMove(sessionId); 
-
-applyMove(sessionId, aiMove);
-
-res.json({ board: getFEN(sessionId), aiMove });
-});
-
--API /api/game/move:
-
-Nhận nước đi từ người chơi,
-
-Gọi AI để chọn nước đi phản hồi,
-
-Trả lại bàn cờ mới và nước đi AI.
-
-**2. logic.js**
-
-const { Chess } = require("chess.js");
-
-const games = {}; // Lưu ván cờ theo sessionId
-
--Dùng thư viện chess.js để xử lý trạng thái bàn cờ.
-
--Mỗi session là 1 đối tượng Chess.
-
-const createGame = (sessionId) => {
-
- const game = new Chess();
- 
- games[sessionId] = game;
- 
- return game.fen();
-};
-
--Tạo game mới và lưu lại theo sessionId.
-
-const applyMove = (sessionId, move) => {
-
-  const game = games[sessionId];
-  
-  if (!game) return false;
-  
-  const result = game.move(move);
-  
-  return !!result;
-};
-
--Áp dụng nước đi vào ván cờ tương ứng session.
-
-const getFEN = (sessionId) => {
-
-  const game = games[sessionId];
-  
-  return game ? game.fen() : null;
-};
-
--Trả về FEN (dùng để frontend load bàn cờ).
-
-
+➡Gửi nước đi của người chơi và nhận phản hồi của AI
+**5.gameController.js**
+Tạo một ván cờ mới và cho phép người chơi đi quân, sau đó AI sẽ đi lại, tất cả diễn ra trên server.
 
