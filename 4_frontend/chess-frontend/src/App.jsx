@@ -17,7 +17,7 @@ function App() {
 
         <div className={styles.modeBoxWrapper}>
           <div onClick={() => { setMode("pvp"); setScreen("chooseColor"); }} className={styles.modeBox}>
-            <div className={styles.icon}>👤⚔️👤</div>
+            <div className={styles.icon}>👤👤</div>
             <div className={styles.modeTitle}>Người vs Người</div>
           </div>
           <div onClick={() => { setMode("pve"); setScreen("chooseColor"); }} className={styles.modeBox}>
