@@ -1,8 +1,10 @@
 // Entry point cho logic game
-export { ChessGame } from './ChessGame.js';
-export { FENParser } from './FENParser.js';
-export { MoveValidator } from './MoveValidator.js';
-export { GameState } from './GameState.js';
+import { ChessGame } from './ChessGame.js';
+import { FENParser } from './FENParser.js';
+import { MoveValidator } from './MoveValidator.js';
+import { GameState } from './GameState.js';
+
+export { ChessGame, FENParser, MoveValidator, GameState };
 
 // Tạo instance game mới
 export function createChessGame(initialFEN = null) {

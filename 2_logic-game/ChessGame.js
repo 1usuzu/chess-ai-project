@@ -444,4 +444,10 @@ export class ChessGame {
     }
     return true;
   }
+
+  isPieceOfCurrentPlayer(piece) {
+    if (!piece) return false;
+    const isWhite = piece === piece.toUpperCase();
+    return (this.currentPlayer === 'white') === isWhite;
+  }
 }
